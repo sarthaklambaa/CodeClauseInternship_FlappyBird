@@ -33,6 +33,18 @@ class Bird(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = [x, y]
 
+    def update(self):
+        # Handling animation
+        self.counter += 1
+        flap_cooldown = 15
+
+        if self.counter > flap_cooldown:
+            self.counter = 0
+            self.index += 1
+            if self.index >= len(self.images):
+                self.index = 0
+        self.image = self.images[self.index]
+
 bird_group = pygame.sprite.Group()
 
 flappy = Bird(100, int(screen_height / 2))\
@@ -47,6 +59,7 @@ while run:
     screen.blit(bg, (0,0))
 
     bird_group.draw(screen)
+    bird_group.update()
 
     screen.blit(ground_bg, (ground_scroll,768))
     ground_scroll -= scroll_speed

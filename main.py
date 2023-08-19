@@ -20,6 +20,15 @@ scroll_speed = 4
 bg = pygame.image.load('img/bg.png')
 ground_bg = pygame.image.load('img/bg-ground.png')
 
+class Bird(pygame.sprite.Sprite):
+    def __init__(self, x, y):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load("img/bird1.jpg")
+        self.rect = self.image.get_rect()
+        self.rect.center = [x, y]
+
+bird_group = pygame.sprite.Group()
+
 run = True
 while run:
 

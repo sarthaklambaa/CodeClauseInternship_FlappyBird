@@ -15,6 +15,7 @@ pygame.display.set_caption("Flappy Bird")
 # Game Variables
 ground_scroll = 0
 scroll_speed = 4
+flying = False
 
 # Load images
 bg = pygame.image.load('img/bg.png')
@@ -37,12 +38,13 @@ class Bird(pygame.sprite.Sprite):
 
     def update(self):
 
-        # Gravity
-        self.vel  += 0.5
-        if self.vel > 8:
-            self.vel = 8 # Value ko 8 tak cap kara hai
-        if self.rect.bottom < 768:
-            self.rect.y += int(self.vel)
+        if flying == True:
+            # Gravity
+            self.vel  += 0.5
+            if self.vel > 8:
+                self.vel = 8 # Value ko 8 tak cap kara hai
+            if self.rect.bottom < 768:
+                self.rect.y += int(self.vel)
 
         # Jumping Animation
         if pygame.mouse.get_pressed()[0] == 1 and self.clicked == False:
@@ -89,6 +91,8 @@ while run:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
+        if event.type == pygame.MOUSEBUTTONDOWN and flying == False:
+            flying = True
 
     pygame.display.update()
 

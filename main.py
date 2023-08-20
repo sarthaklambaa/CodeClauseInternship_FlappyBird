@@ -33,6 +33,7 @@ class Bird(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = [x, y]
         self.vel = 0
+        self.clicked = False
 
     def update(self):
 
@@ -44,8 +45,11 @@ class Bird(pygame.sprite.Sprite):
             self.rect.y += int(self.vel)
 
         # Jumping Animation
-        if pygame.mouse.get_pressed()[0] == 1:
+        if pygame.mouse.get_pressed()[0] == 1 and self.clicked == False:
+            self.clicked = True
             self.vel = -10
+        if pygame.mouse.get_pressed()[0] == 0:
+            self.clicked = False
 
         # Handling animation
         self.counter += 1

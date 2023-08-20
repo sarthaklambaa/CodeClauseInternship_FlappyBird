@@ -17,6 +17,9 @@ ground_scroll = 0
 scroll_speed = 4
 flying = False
 game_over = False
+pipe_gap = 150
+pipe_frequency = 1500
+last_pipe = pygame.time.get_ticks()
 
 # Load images
 bg = pygame.image.load('img/bg.png')
@@ -81,10 +84,13 @@ class Pipe(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         if position == 1:
             self.image = pygame.transform.flip(self.image, False, True)
-            self.rect.bottomleft = [x,y]
+            self.rect.bottomleft = [x,y - int(pipe_gap / 2)]
 
         if position == -1:
-            self.rect.topleft = [x,y]
+            self.rect.topleft = [x,y + int(pipe_gap / 2)]
+
+    def update(self):
+        self.rect.x -= scroll_speed
 
 bird_group = pygame.sprite.Group()
 pipe_group = pygame.sprite.Group()
@@ -92,10 +98,6 @@ pipe_group = pygame.sprite.Group()
 flappy = Bird(100, int(screen_height / 2))
 bird_group.add(flappy)
 
-btm_pipe =  Pipe(300, int(screen_height / 2), -1)
-top_pipe =  Pipe(300, int(screen_height / 2), 1)
-pipe_group.add(btm_pipe)
-pipe_group.add(top_pipe)
 
 run = True
 while run:
@@ -119,6 +121,16 @@ while run:
         flying = False
 
     if game_over == False:
+
+        # Generate new pipes
+        time_now = pygame.time.get_ticks()
+        if time_now - last_pipe > pipe_frequency:
+            btm_pipe =  Pipe(screen_width, int(screen_height / 2), -1)
+            top_pipe =  Pipe(screen_width, int(screen_height / 2), 1)
+            pipe_group.add(btm_pipe)
+            pipe_group.add(top_pipe)   
+            last_pipe = time_now         
+
         # Ground Scrolling
         ground_scroll -= scroll_speed
         if abs(ground_scroll) > 35:

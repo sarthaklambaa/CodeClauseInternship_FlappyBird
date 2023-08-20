@@ -62,9 +62,12 @@ class Bird(pygame.sprite.Sprite):
                 self.index = 0
         self.image = self.images[self.index]
 
+        # Rotating the bird
+        self.image = pygame.transform.rotate(self.images[self.index], self.vel * -2)
+
 bird_group = pygame.sprite.Group()
 
-flappy = Bird(100, int(screen_height / 2))\
+flappy = Bird(100, int(screen_height / 2))
 
 bird_group.add(flappy)
 
